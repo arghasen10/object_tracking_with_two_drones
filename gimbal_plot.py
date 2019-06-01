@@ -61,7 +61,11 @@ X2 = [pt2[0],pt3[0]]
 Y2 = [pt2[1],pt3[1]]
 Z2 = [pt2[2],pt3[2]]
 plt.plot(X1,Y1,Z1,'ro-')
+
 plt.plot(X2,Y2,Z2,'yo-')
+ax.text(pt1[0],pt1[1],pt1[2],"Drone1",color = 'red')
+ax.text(pt2[0],pt2[1],pt2[2],"Drone2",color = 'red')
+ax.text(pt3[0],pt3[1],pt3[2],"Object",color = 'red')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 
