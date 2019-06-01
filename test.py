@@ -35,6 +35,7 @@ while True:
    zline2 = [z2[-1], 0]
    print(x2[-1],y2[-1],z2[-1])
    plt.plot(xline2, yline2, zline2, 'yo-')
+
    ax.set_xlabel("x")
    ax.set_ylabel("y")
    ax.set_zlabel("z")

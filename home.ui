@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
-    <height>496</height>
+    <width>423</width>
+    <height>497</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -345,7 +345,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_10">
+  <widget class="QPlainTextEdit" name="yawval2">
    <property name="geometry">
     <rect>
      <x>250</x>
