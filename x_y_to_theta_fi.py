@@ -44,7 +44,7 @@ upper_hsv = np.array([hmax, smax, vmax])
 ##cv2.createTrackbar("smax", "frame1", 50, 255, smaxc)
 ##cv2.createTrackbar("vmin", "frame1", 50, 255, vminc)
 ##cv2.createTrackbar("vmax", "frame1", 50, 255, vmaxc)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('bluebox_drone.MP4')
 largest_area = 0
 theta =[0]
 fi = [0]
@@ -55,21 +55,27 @@ cX, cY = 0, 0
 areas = []
 starttime = time.time()
 previoustime = starttime
+ret,frame = cap.read()
+hframe,wframe = frame.shape[0],frame.shape[1]
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+
+out = cv2.VideoWriter('output_processe.avi', fourcc, 32.0, (wframe,hframe))
+
 while True:
     ret, frame = cap.read()
     if not ret:
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture('bluebox_drone.MP4')
         ret, frame = cap.read()
         continue
     hframe,wframe = frame.shape[0],frame.shape[1]
     cntFrameX,cntFrameY = wframe//2,hframe//2
-    print(cntFrameX,cntFrameY)
-    hmin = cv2.getTrackbarPos("hmin", "frame1")
-    hmax = cv2.getTrackbarPos("hmax", "frame1")
-    smin = cv2.getTrackbarPos("smin", "frame1")
-    smax = cv2.getTrackbarPos("smax", "frame1")
-    vmin = cv2.getTrackbarPos("vmin", "frame1")
-    vmax = cv2.getTrackbarPos("vmax", "frame1")
+    #print(cntFrameX,cntFrameY)
+    #hmin = cv2.getTrackbarPos("hmin", "frame1")
+    #hmax = cv2.getTrackbarPos("hmax", "frame1")
+    #smin = cv2.getTrackbarPos("smin", "frame1")
+    #smax = cv2.getTrackbarPos("smax", "frame1")
+    #vmin = cv2.getTrackbarPos("vmin", "frame1")
+    #vmax = cv2.getTrackbarPos("vmax", "frame1")
     #lower_green = np.array([hmin, smin, vmin])
     #upper_green = np.array([hmax, smax, vmax])
     lower_hsv = np.array([86,122,117])
@@ -100,20 +106,21 @@ while True:
             cX, cY = 0, 0
         ##
         ##    # draw the contour and center of the shape on the image
-        #cv2.drawContours(frame, [cnt], -1, (0, 255, 0), 2)
-        #cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
-        #cv2.putText(frame, "center of Obj", (cX - 20, cY - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+        cv2.drawContours(frame, [cnt], -1, (0, 255, 0), 2)
+        cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
+        cv2.putText(frame, "center of Obj", (cX - 20, cY - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
-    #cv2.circle(frame,(cntFrameX,cntFrameY),5,(255,255,255),-1)
-    #cv2.putText(frame, "center of frame", (cntFrameX - 10, cntFrameY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+    cv2.circle(frame,(cntFrameX,cntFrameY),5,(255,255,255),-1)
+    cv2.putText(frame, "center of frame", (cntFrameX - 10, cntFrameY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
     delx = cntFrameX-cX
     dely = cntFrameY-cY
     X.append(delx)
     Y.append(dely)
     #Need to find actual value of angle of view of camera
-    delfi = math.atan(math.tan(1.134)*delx/320)*180/3.14
-    deltheta = math.atan(math.tan(1.134)*dely/240)*180/3.14
+    delfi = -math.atan(math.tan(1.134)*delx/320)*180/3.14
+    deltheta = -math.atan(math.tan(1.134)*dely/240)*180/3.14
 
+    cv2.putText(frame,'Pitch :'+str.format('{0:.3f}', deltheta)+'Yaw :'+str.format('{0:.3f}', delfi),(wframe-240,80),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
     theta.append(deltheta)
     fi.append(delfi)
     timenow = time.time()
@@ -126,10 +133,11 @@ while True:
     #print("Deltheta: ",deltheta)
     #print("Delfi: ",delfi)
     #print("Time: ",timeval)
-    #print("TimeFrame :",timeframe)
+    print("TimeFrame :",timeframe)
 
     #cv2.imshow('hsv', hsv)
     cv2.imshow('frame', frame)
+    out.write(frame)
     #cv2.imshow('mask', mask)
     #cv2.imshow('morphological transformation',morphed)
     #cv2.imshow('res',res)
@@ -149,5 +157,6 @@ while True:
         axs[3].set(xlabel = 'time',ylabel = 'delfy')
         plt.show()
         break
+out.release()
 cap.release()
 cv2.destroyAllWindows()
