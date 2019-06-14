@@ -3,6 +3,7 @@ import numpy as np
 import time
 import math
 import matplotlib.pyplot as plt
+import csv
 hmin = 0
 hmax = 0
 smin = 0
@@ -57,9 +58,17 @@ starttime = time.time()
 previoustime = starttime
 ret,frame = cap.read()
 hframe,wframe = frame.shape[0],frame.shape[1]
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
+#fourcc = cv2.VideoWriter_fourcc(*'XVID')
 
-out = cv2.VideoWriter('output_processe.avi', fourcc, 32.0, (wframe,hframe))
+#out = cv2.VideoWriter('output_processe.avi', fourcc, 32.0, (wframe,hframe))
+
+
+#csv file for storing yaw pitch with timestamp
+
+with open('orientation_data.csv', 'w+') as csv_file:
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(["Yaw","Pitch","Timestamp"])
+
 
 while True:
     ret, frame = cap.read()
@@ -134,10 +143,15 @@ while True:
     #print("Delfi: ",delfi)
     #print("Time: ",timeval)
     print("TimeFrame :",timeframe)
+    #csv file store output
+    with open('orientation_data.csv', 'a') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(
+            [delfi,deltheta,timenow])
 
     #cv2.imshow('hsv', hsv)
     cv2.imshow('frame', frame)
-    out.write(frame)
+    #out.write(frame)
     #cv2.imshow('mask', mask)
     #cv2.imshow('morphological transformation',morphed)
     #cv2.imshow('res',res)
@@ -157,6 +171,6 @@ while True:
         axs[3].set(xlabel = 'time',ylabel = 'delfy')
         plt.show()
         break
-out.release()
+#out.release()
 cap.release()
 cv2.destroyAllWindows()
