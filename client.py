@@ -1,13 +1,10 @@
 import socket
-from time import sleep
-s = socket.socket()
-#host = socket.gethostname()
-host = '192.168.43.39'
-port = 8000
-s.connect((host,port))
-msg = "Hello world from client 1\n"
-msg = msg.encode()
-while 1:
-    s.send(msg)
-    print("Messege sent to server ")
-    #sleep(0.5)
+host = '127.0.0.1'
+port = 8080
+msg = "2"
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+    client.connect((host,port))
+
+    while True:
+        
+        client.send(msg.encode())
