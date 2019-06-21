@@ -1,78 +1,104 @@
 import sys
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication,QDialog
 from PyQt5.uic import loadUi
-#from gimbal_plot import parse
+from PyQt5.QtWidgets import QMainWindow, QApplication
+import bgimgw
 
-
-
-class MainPage(QDialog):
+class groundstat(QMainWindow):
     def __init__(self):
-        super(MainPage,self).__init__()
-        loadUi('home.ui',self)
-        self.pushButton.clicked.connect(self.retrievedrone1)
-        self.pushButton_2.clicked.connect(self.retrievedrone2)
-        self.pushButton_3.clicked.connect(self.plot_lines)
-        self.lat1val = 0.0
-        self.lat2val = 0.0
-        self.lon1val = 0.0
-        self.lon2val = 0.0
-        self.alt1val = 0.0
-        self.alt2val = 0.0
-        self.pitchval1val = 0.0
-        self.yawval1val = 0.0
-        self.pitchval2val = 0.0
-        self.yawval2val = 0.0
+        super(groundstat, self).__init__()
+        loadUi('groundstation.ui', self)
 
-    def retrievedrone1(self):
-        self.lat1val = self.lat1.toPlainText()
-        self.lon1val = self.lon1.toPlainText()
-        self.alt1val = self.alt1.toPlainText()
-        self.pitchval1val = self.pitchval1.toPlainText()
-        self.yawval1val = self.yawval1.toPlainText()
-
-        self.textEdit.setText(self.lat1val)
-        self.textEdit_2.setText(self.lon1val)
-        self.textEdit_3.setText(self.alt1val)
-        self.textEdit_4.setText(self.pitchval1val)
-        self.textEdit_5.setText(self.yawval1val)
+        self.pushButton_20.clicked.connect(self.submit)
+        self.pushButton_21.clicked.connect(self.postprocessing)
+        self.pushButton_22.clicked.connect(self.realtimeprocessing)
+        self.pushButton_23.clicked.connect(self.startserver)
+        self.pushButton.clicked.connect(self.connectdrone1)
+        self.pushButton_2.clicked.connect(self.connectdrone2)
+        self.pushButton_4.clicked.connect(self.openmp1)
+        self.pushButton_5.clicked.connect(self.openmp2)
+        self.pushButton_18.clicked.connect(self.triangulate)
+        self.pushButton_19.clicked.connect(self.display)
+        self.pushButton_8.clicked.connect(self.storedata)
+        self.pushButton_7.clicked.connect(self.fpv1)
+        self.pushButton_9.clicked.connect(self.fpv2)
+        self.pushButton_10.clicked.connect(self.close)
+        self.message = ""
 
 
-    def retrievedrone2(self):
-        self.lat2val = self.lat2.toPlainText()
-        self.lon2val = self.lon2.toPlainText()
-        self.alt2val = self.alt2.toPlainText()
-        self.pitchval2val = self.pitchval2.toPlainText()
-        self.yawval2val = self.yawval2.toPlainText()
-
-        self.textEdit_6.setText(self.lat2val)
-        self.textEdit_7.setText(self.lon2val)
-        self.textEdit_8.setText(self.alt2val)
-        self.textEdit_9.setText(self.pitchval2val)
-        self.textEdit_10.setText(self.yawval2val)
-
-
-
-
-
-    def plot_lines(self):
-        import gimbal_plot
-        self.lat1val = float(self.lat1val)
-        self.lon1val = float(self.lon1val)
-        self.alt1val = float(self.alt1val)
-        self.pitchval1val = float(self.pitchval1val)
-        self.yawval1val = float(self.yawval1val)
-        self.lat2val = float(self.lat2val)
-        self.lon2val = float(self.lon2val)
-        self.alt2val = float(self.alt2val)
-        self.pitchval2val = float(self.pitchval2val)
-        self.yawval2val = float(self.yawval2val)
-
-        parser = gimbal_plot.parse(self.lat1val,self.lon1val,self.alt1val,self.pitchval1val,self.yawval1val,self.lat2val,self.lon2val,self.alt2val,self.pitchval2val,self.yawval2val)
+        #Initialization of line edit
+        self.lineEdit = 0.0
+        self.lineEdit_10 = 0.0
+        self.lineEdit_11 = 0.0
+        self.lineEdit_12 = 0.0
+        self.lineEdit_13 = 0.0
+        self.lineEdit_14 = 0.0
+        self.lineEdit_15 = 0.0
+        self.lineEdit_16 = 0.0
+        self.lineEdit_17 = 0.0
+        self.lineEdit_18 = 0.0
+        self.lineEdit_2 = 0.0
+        self.lineEdit_20 = 0.0
+        self.lineEdit_21 = 0.0
+        self.lineEdit_24 = 0.0
+        self.lineEdit_25 = 0.0
+        self.lineEdit_27 = 0.0
+        self.lineEdit_28 = 0.0
+        self.lineEdit_3 = 0.0
+        self.lineEdit_4 = 0.0
+        self.lineEdit_5 = 0.0
+        self.lineEdit_6 = 0.0
+        self.lineEdit_7 = 0.0
+        self.lineEdit_8 = 0.0
+        self.lineEdit_9 = 0.0
+        self.galt = 0.0
+        self.glong = 0.0
+        self.glat = 0.0
 
 
+    def start_server(self):
+        print("Button pressed")
+
+    def submit(self):
+        print("Button Clickecd")
+
+    def realtimeprocessing(self):
+        print("Button Clickecd")
+
+    def connectdrone1(self):
+        print("Button Clickecd")
+
+    def connectdrone2(self):
+        print("Button Clickecd")
+
+    def openmp1(self):
+        print("Button Clickecd")
+
+    def openmp2(self):
+        print("Button Clickecd")
+
+    def triangulate(self):
+        print("Button Clickecd")
+
+    def display(self):
+        print("Button Clickecd")
+
+    def storedata(self):
+        print("Button Clickecd")
+
+    def fpv1(self):
+        print("Button Clickecd")
+
+    def fpv2(self):
+        self.val = "button clicked"
+        self.lineEdit_9.setText(self.val)
+
+    def close(self):
+        sys.exit(0)
 
 app = QApplication(sys.argv)
-widget = MainPage()
-widget.show()
+window = groundstat()
+window.show()
 sys.exit(app.exec_())
+
+
