@@ -76,7 +76,8 @@ with open(filename, 'w+') as csv_file:
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(header_name)
 
-
+filename-='.csv'
+filename+='.avi'
 cap = cv2.VideoCapture(0)
 largest_area = 0
 theta =[0]
@@ -93,7 +94,7 @@ ret,frame = cap.read()
 print(ret)
 hframe,wframe = frame.shape[0],frame.shape[1]
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('output_take1.avi',fourcc,32.0,(wframe,hframe))
+out = cv2.VideoWriter(filename,fourcc,32.0,(wframe,hframe))
 while True:
     ret, frame = cap.read()
     if not ret:
