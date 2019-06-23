@@ -1,10 +1,11 @@
-import sys
+import sys,os
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication,QDialog,QFileDialog,QInputDialog
 import bgimgw
-
+from PyQt5 import QtCore
+import subprocess
 import time as tm
-import csv
+import csv,time
 import datetime
 
 import socket
@@ -61,41 +62,45 @@ class GroundStat(QMainWindow):
         self.glatval = 0.0
         self.glongval = 0.0
         self.galtval = 0.0
-        self.lat1 = 0.0
-        self.long1 = 0.0
-        self.alt1 = 0.0
-        self.yawd1 = 0.0
-        self.pitchd1 = 0.0
-        self.yawc1 = 0.0
-        self.pitchc1 = 0.0
-        self.yawt1 = 0.0
-        self.pitcht1 = 0.0
-        self.lat2 = 0.0
-        self.long2 = 0.0
-        self.alt2 = 0.0
-        self.yawd2 = 0.0
-        self.pitchd2 = 0.0
-        self.yawc2 = 0.0
-        self.pitchc2 = 0.0
-        self.yawt2 = 0.0
-        self.pitcht2 = 0.0
+##        self.lat1 = 0.0
+##        self.long1 = 0.0
+##        self.alt1 = 0.0
+##        self.yawd1 = 0.0
+##        self.pitchd1 = 0.0
+##        self.yawc1 = 0.0
+##        self.pitchc1 = 0.0
+##        self.yawt1 = 0.0
+##        self.pitcht1 = 0.0
+##        self.lat2 = 0.0
+##        self.long2 = 0.0
+##        self.alt2 = 0.0
+##        self.yawd2 = 0.0
+##        self.pitchd2 = 0.0
+##        self.yawc2 = 0.0
+##        self.pitchc2 = 0.0
+##        self.yawt2 = 0.0
+##        self.pitcht2 = 0.0
         self.mess = " "
+        self.storeval = ''
 
     def submit(self):
         self.glatval = self.glat.toPlainText()
         self.glongval = self.glong.toPlainText()
         self.galtval = self.galt.toPlainText()
-        self.mess = "Ground parameters received."
+        self.mess = "Ground parameters received."+"Ground Lat: "+str(self.glatval)+" Ground Lng: "+str(self.glongval)+" Ground Alt: "+str(self.galtval)
         self.message.setText(self.mess)
 
     def postprocessing(self):
-        print("button clicked")
+        self.open_dialog_box()
 
     def realtimeprocessing(self):
         self.mess = "Host Ground Station as a server to the Drone."
         self.message.setText(self.mess)
     def connectdrone1(self):
-        print("aa")
+        timer = QtCore.QTimer()
+        timer.timeout.connect(self.printhi)
+        timer.setInterval(1)
+        timer.start()
 
     def connectdrone2(self):
         print("aa")
@@ -141,10 +146,76 @@ class GroundStat(QMainWindow):
             Thread(target=self.connectdroneb(conn2)).start()
 
     def openmp1(self):
-        print("button clicked")
+        self.message.setText("Opening Mission Planner..")
+        time.sleep(1.5)
+        subprocess.Popen("C:\Program Files (x86)\Mission Planner\MissionPlanner.exe")
+
+        self.message.setText("Mission Planner opened for drone 1")
 
     def openmp2(self):
-        print("button clicked")
+        self.message.setText("Opening Mission Planner..")
+        time.sleep(1.5)
+        subprocess.Popen("C:\Program Files (x86)\Mission Planner\MissionPlanner.exe")
+
+        self.message.setText("Mission Planner opened for drone 2")
+
+    def open_dialog_box(self):
+        filename = QFileDialog.getOpenFileName(self, 'Open CSV', os.getenv('HOME'), 'CSV(*.csv)')
+        filename = filename[0]
+        print(filename)
+        #filename = 'C:/Users/ARGHA SEN/Desktop/example1.txt'
+        flag = 0
+        i=0
+        with open(filename, "r") as infile:
+            read = csv.reader(infile)
+
+
+            for row in read:
+                i+=1
+                try:
+                    self.storeval = row
+                    self.storeval.append(i)
+                    # self.timer = QtCore.QTimer()
+
+                    # self.timer.timeout.connect(self.printhi)
+
+                    # self.timer.start(1000)
+                    #self.timer.setInterval(100, self.printhi)
+                    #self.update_val(row)
+                    #self.printhi()
+                    #print(row)
+                    print(i)
+
+                    
+                except Exception as e:
+                    print("Update error: ",e)
+                #self.timer.timeout.connect(self.update_val(row))
+
+    def printhi(self):
+        print("Hi")
+        print(self.storeval)
+
+    def update_val(self,row):
+        self.lat1.setText(row[2])
+        self.long1.setText(row[3])
+        self.alt1.setText(row[4])
+        self.yawd1.setText(row[5])
+        self.pitchd1.setText(row[6])
+        self.yawc1.setText(row[7])
+        self.pitchc1.setText(row[8])
+        self.yawt1.setText(row[9])
+        self.pitcht1.setText(row[10])
+        self.lat2.setText(row[11])
+        self.long2.setText(row[12])
+        self.alt2.setText(row[13])
+        self.yawd2.setText(row[14])
+        self.pitchd2.setText(row[15])
+        self.yawc2.setText(row[16])
+        self.pitchc2.setText(row[17])
+        self.yawt2.setText(row[18])
+        self.pitcht2.setText(row[19])
+        print(row[2])
+        return
 
     def triangulate(self):
         print("button clicked")
