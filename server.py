@@ -1,9 +1,8 @@
 import socket
-from threading import *
-import time
+s = socket.socket()
 
-host = '127.0.0.1'
-port = 8080
+host = '192.168.43.39'
+port = 8000
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host,port))
 server.listen(2)
@@ -14,33 +13,22 @@ print('waiting for second client')
 conn2, addr2 = server.accept()
 print('Connected by client: %s' % repr(addr1))
 
-
-class Receive1(Thread):
-    def run(self):
-        while True:
-            data = conn1.recv(1024)
-            if not data:
-                break
-            print('Received from client1: %s' % data.decode())
-            time.sleep(0.2)
+def connrun():
+    data = conn1.recv(1024)
+    return data
+def conn1run():
+    data = conn2.recv(1024)
+    return data
 
 
-class Receive2(Thread):
-    def run(self):
-        while True:
-            data = conn2.recv(1024)
-            if not data:
-                break
-            print('Received from client2: %s' % data.decode())
-            time.sleep(0.2)
-
-
-
-R1 = Receive1()
-R2 = Receive2()
-
-R1.start()
-time.sleep(0.2)
-R2.start()
-
-        
+while True:
+    data1=connrun()
+    data2 = conn1run()
+    data1 = data1.decode()
+    data2 = data2.decode()
+    data1 = data1.split('\n')
+    data1 = data1[-2]
+    data2 = data2.split('\n')
+    data2 = data2[-2]
+    print(data1)
+    print(data2)
